@@ -1,15 +1,23 @@
 <template>
     <div class="posts">
-        <Loader v-if="isLoading"></Loader>
-        <div class="post" v-for="(item, index) in postsList" :key="index">
-            <h3>{{index}} {{ item.title }}</h3>
+        <div class="post" v-for="(item, index) in $store.state.postsList" :key="index">
+            <h2>
+                <router-link class="menu-item" :to="'/post/' + item.id">
+                    {{ item.title }}
+                </router-link>
+            </h2>
             <p>{{ item.body }}</p>
+            <p>
+                Автор:
+                <router-link :to="'/user/' + item.userId">
+                    {{ getAuthor(item.userId) }}
+                </router-link>
+            </p>
         </div>
     </div>
 </template>
 
 <script>
-    const axios = require('axios');
     export default {
         data() {
             return {
@@ -20,16 +28,30 @@
         props: {
             msg: String
         },
-        methods: {},
-        mounted: function () {
-            axios
-                .get('https://jsonplaceholder.typicode.com/posts')
-                .then(response => (this.postsList = response.data));
-        }
+        methods: {
+            getAuthor(id){
+                const users = this.$store.state.usersList;
+                const result = users.filter(user => user.id == id);
+                return result[0].username;
+            }
+        },
+        mounted: function () {}
     }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
+<style scoped lang="scss">
+    .post{
+        border-bottom: 1px solid #41b883;
+        h2 a{
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+        a{
+            color: #42b983;
+        }
+        p{
+            color: gray;
+        }
+    }
 </style>
