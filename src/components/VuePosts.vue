@@ -1,5 +1,5 @@
 <template>
-    <div class="posts">
+    <div class="posts" v-if="$store.state.postsList.length > 0">
         <div class="post" v-for="(item, index) in $store.state.postsList" :key="index">
             <h2>
                 <router-link class="menu-item" :to="'/post/' + item.id">
@@ -30,12 +30,16 @@
         },
         methods: {
             getAuthor(id){
-                const users = this.$store.state.usersList;
-                const result = users.filter(user => user.id == id);
-                return result[0].username;
+                if (typeof this.$store.state.usersList == "object"){
+                    const users = this.$store.state.usersList;
+                    const result = users.filter(user => user.id == id);
+                    return result[0].username;
+                }
             }
         },
-        mounted: function () {}
+        mounted: function () {
+            this.$store.dispatch('getAllData');
+        }
     }
 </script>
 

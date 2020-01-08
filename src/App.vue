@@ -18,7 +18,6 @@
 
 <script>
     import Loader from './components/Loader.vue';
-    const axios = require('axios');
     export default {
         data() {
             return {
@@ -35,28 +34,11 @@
         },
         computed: {},
         created() {
-            this.isLoading.posts = true;
-            this.isLoading.users = true;
-            this.isLoading.comments = true;
-
-            axios
-                .get('https://jsonplaceholder.typicode.com/posts')
-                .then(response => (
-                    this.$store.state.postsList = response.data,
-                    this.isLoading.posts = false
-                ));
-            axios
-                .get('https://jsonplaceholder.typicode.com/users')
-                .then(response => (
-                    this.$store.state.usersList = response.data,
-                        this.isLoading.users = false
-                ));
-            axios
-                .get('https://jsonplaceholder.typicode.com/comments')
-                .then(response => (
-                    this.$store.state.commentsList = response.data,
-                        this.isLoading.comments = false
-                ));
+        },
+        methods:{
+            getAllData(){
+                this.$store.dispatch('getAllData');
+            }
         }
     }
 </script>

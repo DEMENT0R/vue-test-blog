@@ -2,10 +2,14 @@ import Vue from 'vue'
 import App from './App.vue'
 
 import VueRouter from 'vue-router'
+
 Vue.use(VueRouter);
 
-import Vuex from 'vuex';
+import Vuex from 'vuex'
+
 Vue.use(Vuex);
+
+const axios = require('axios');
 
 Vue.config.productionTip = false;
 
@@ -32,7 +36,35 @@ const router = new VueRouter({
 
 // store
 const store = new Vuex.Store({
-  state: {}
+    state: {
+        postsList: {},
+        usersList: {},
+        commentsList: {}
+    },
+    mutations: {
+        getAllData(state) {
+            axios
+                .get('https://jsonplaceholder.typicode.com/posts')
+                .then(response => (
+                    state.postsList = response.data
+                ));
+            axios
+                .get('https://jsonplaceholder.typicode.com/users')
+                .then(response => (
+                    state.usersList = response.data
+                ));
+            axios
+                .get('https://jsonplaceholder.typicode.com/comments')
+                .then(response => (
+                    state.commentsList = response.data
+                ));
+        }
+    },
+    actions: {
+        getAllData(context) {
+            context.commit('getAllData');
+        }
+    }
 });
 
 // start app

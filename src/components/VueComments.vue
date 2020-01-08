@@ -21,7 +21,9 @@
             msg: String
         },
         methods: {},
-        mounted: function () {}
+        mounted: function () {
+            this.$store.dispatch('getAllData');
+        }
     }
 </script>
 
